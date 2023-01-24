@@ -1,6 +1,10 @@
+import React, { useContext } from "react";
 import styled from "styled-components";
+import { useLocation } from "react-router-dom";
 import { SearchInput } from "../moleucules/SearchInput";
 import { UserCard } from "../organisms/User/UserCard";
+import { SecondaryButton } from "../atoms/button/SecondaryButton";
+import { UserContext } from "../../providers/UserProvider";
 
 const users = [...Array(10).keys()].map((val) => {
   return {
@@ -12,16 +16,23 @@ const users = [...Array(10).keys()].map((val) => {
     phone: "909-0009-2090",
     company: {
       name: "test株式会社",
-      website: "https://google.com"
-    }
+      website: "https://google.com",
+    },
   };
 });
 
 export const Users = () => {
+  const { userInfo, setUserInfo } = useContext(UserContext);
+  const onClickSwitch = () => setUserInfo({ isAdmin: !userInfo.isAdmin });
+  const { state } = useLocation();
+  console.log(state);
+
   return (
     <SContainer>
       <h2>User一覧</h2>
       <SearchInput />
+      <br />
+      <SecondaryButton onClick={onClickSwitch}>切り替え</SecondaryButton>
       <SUserArea>
         {users.map((user) => (
           <UserCard key={user.id} user={user} />
